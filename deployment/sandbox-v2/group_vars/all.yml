@@ -481,7 +481,7 @@ config_repo:
   gitpassword: '{{secrets.config_repo.password}}'
   search_folders: sandbox # Subdir in repo containing properties
   local_git_repo:
-    enabled: false
+    enabled: true
     path: '{{nfs.folder}}/mosip-config'
     storage_size: 10Mi
 
