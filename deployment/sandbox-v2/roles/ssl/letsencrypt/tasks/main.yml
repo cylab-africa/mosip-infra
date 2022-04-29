@@ -38,7 +38,7 @@
     replace: '#from acme.magic_typing import IO'
     backup: yes
 
-# The below code section has been added to automate the process of Challenge Verification with Certbot and CloudFlare since our domain name points to a private IP Address. You should replace the values [YOUREMAIL, YOURAPIKEY] with your own values (YOU SHOULD FOLLOW THESE INSTRUCTIONS ONLY IF YOUR DOMAIN NAME POINTS TO A PRIVATE IP ADDRESS).
+# The below code section has been added to automate the process of Challenge Verification with Certbot and CloudFlare (Our DNS Provider) since our domain name points to a private IP Address. You should replace the values [YOUREMAIL, YOURAPIKEY] with your own values (YOU SHOULD FOLLOW THESE INSTRUCTIONS ONLY IF YOUR DOMAIN NAME POINTS TO A PRIVATE IP ADDRESS).
 # If your domain name points to a public IP Address, then you can leave everything as-is since this script takes care of this use case by default.
 # - name: Install Certbot Cloudflare Plugin
 #   pip:
@@ -52,6 +52,7 @@
 
 - name: run certbot 
   shell: '{{ansible_env.HOME}}/.venv-py3/bin/certbot certonly --nginx -n  -m "{{ssl.ca.letsencrypt.email}}" --agree-tos -d {{ item }} '
+  # Uncomment the below line only if you uncommented lines 43-51
   # shell: '{{ansible_env.HOME}}/.venv-py3/bin/certbot certonly -i nginx -n -m "{{ssl.ca.letsencrypt.email}}" --agree-tos --dns-cloudflare --dns-cloudflare-credentials /home/mosipuser/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -d mosipcmuafrica.me,*.mosipcmuafrica.me --preferred-challenges dns-01'
   become: yes
   register: out
