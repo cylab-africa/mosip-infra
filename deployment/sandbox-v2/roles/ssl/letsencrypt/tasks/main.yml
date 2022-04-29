@@ -38,10 +38,8 @@
     replace: '#from acme.magic_typing import IO'
     backup: yes
 
-
-# This has been added to automate the process of Challenge Verification with Certbot and CloudFlare since our domain name points to a private IP Address. 
-# If your domain name points to a public IP Address, then you can skip this step by commenting it out (line 44-46). In this case, uncomment line 48
-# Otherwise, you should replace the values, YOUREMAIL and YOURAPIKEY with yours
+# The below code section has been added to automate the process of Challenge Verification with Certbot and CloudFlare since our domain name points to a private IP Address. You should replace the values [YOUREMAIL, YOURAPIKEY] with your own values.
+# If your domain name points to a public IP Address, then you can skip this step by commenting out line 46-54, line 57 and uncommenting line 56.
 
 - name: Install Certbot Cloudflare Plugin
   pip:
