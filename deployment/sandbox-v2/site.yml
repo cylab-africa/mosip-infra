@@ -38,6 +38,7 @@
 - import_playbook: playbooks/datashare.yml
 - import_playbook: playbooks/prereg.yml
 - import_playbook: playbooks/regproc.yml
+- import_playbook: playbooks/ida.yml
 - import_playbook: playbooks/idrepo.yml
 - import_playbook: playbooks/pms.yml
 - import_playbook: playbooks/resident.yml
@@ -50,4 +51,3 @@
 - import_playbook: playbooks/mosip-file-server.yml
 # Certificates Upload
 - import_playbook: playbooks/uploadCerts.yml
-- import_playbook: playbooks/ida.yml
