@@ -38,16 +38,24 @@
     replace: '#from acme.magic_typing import IO'
     backup: yes
 
+
 # This has been added to automate the process of Challenge Verification with Certbot and CloudFlare since our domain name points to a private IP Address. 
 # If your domain name points to a public IP Address, then you can skip this step by commenting it out (line 44-46). In this case, uncomment line 48
 # Otherwise, you should replace the values, YOUREMAIL and YOURAPIKEY with yours
+
 - name: Install Certbot Cloudflare Plugin
+  pip:
+    name: certbot-dns-cloudflare
+    virtualenv: '{{ansible_env.HOME}}/.venv-py3'
+    state: present
+
+- name: Configure Certbot Cloudflare Plugin Files
   become: yes
-  shell: yum instal python3-certbot-dns-cloudflare -y && mkdir /home/mosipuser/.secrets/ && touch /home/mosipuser/.secrets/cloudflare.ini && echo "dns_cloudflare_email = YOUREMAIL" >> /home/mosipuser/.secrets/cloudflare.ini && echo "dns_cloudflare_api_key = YOURAPIKEY" >> /home/mosipuser/.secrets/cloudflare.ini && sudo chmod 0700 /home/mosipuser/.secrets/ && sudo chmod 0400 /home/mosipuser/.secrets/cloudflare.ini
+  shell: mkdir /home/mosipuser/.secrets/ && touch /home/mosipuser/.secrets/cloudflare.ini && echo "dns_cloudflare_email = YOUREMAIL" >> /home/mosipuser/.secrets/cloudflare.ini && echo "dns_cloudflare_api_key = YOURAPIKEY" >> /home/mosipuser/.secrets/cloudflare.ini && sudo chmod 0700 /home/mosipuser/.secrets/ && sudo chmod 0400 /home/mosipuser/.secrets/cloudflare.ini
 
 - name: run certbot 
   #shell: '{{ansible_env.HOME}}/.venv-py3/bin/certbot certonly --nginx -n  -m "{{ssl.ca.letsencrypt.email}}" --agree-tos -d {{ item }} '
-  shell: '{{ansible_env.HOME}}/.venv-py3/bin/certbot certonly --nginx -n -m "{{ssl.ca.letsencrypt.email}}" --agree-tos --dns-cloudflare --dns-cloudflare-credentials /home/mosipuser/.secrets/cloudflare.ini -d mosipcmuafrica.me,*.mosipcmuafrica.me --preferred-challenges dns-01
+  shell: '{{ansible_env.HOME}}/.venv-py3/bin/certbot certonly -i nginx -n -m "{{ssl.ca.letsencrypt.email}}" --agree-tos --dns-cloudflare --dns-cloudflare-credentials /home/mosipuser/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -d mosipcmuafrica.me,*.mosipcmuafrica.me --preferred-challenges dns-01'
   become: yes
   register: out
   with_items:
